@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Dice</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, height=device-height,initial-scale=1"
+    />
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: black;
+      }
+
+      .back {
+        background-image: linear-gradient(
+          to bottom right,
+          rgba(60, 60, 199, 0.781),
+          purple,
+          green
+        );
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .content {
+        width: 95%;
+        height: 95%;
+        opacity: 85%;
+        border-radius: 15px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 2px;
+      }
+
+      .wrapper {
+        border: solid 1px black;
+        border-radius: 15px;
+        text-align: center;
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        justify-content: center;
+        grid-row-gap: 10px;
+        background-color: whitesmoke;
+        opacity: 85%;
+      }
+
+      .dice {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 1px black solid;
+        height: 110px;
+        width: 110px;
+        background-color: white;
+        border: 1px solid whitesmoke;
+        background-size: contain;
+      }
+
+      .side1,
+      .side2 {
+        margin: 0;
+        padding: 0;
+      }
+
+      .header {
+        width: 100%;
+        margin-top: 50%;
+      }
+
+      .footer {
+        width: 100%;
+        padding-top: 50%;
+      }
+
+      h1 {
+        padding: 5px;
+        border-radius: 15px;
+        display: block;
+        font-size: clamp(20px, 7vw, 3.5rem);
+      }
+
+      h2 {
+        display: block;
+        font-size: clamp(10px, 5vw, 2rem);
+      }
+
+      label {
+        font-size: clamp(20px, 7vw, 3.5rem);
+      }
+
+      .buttonArea {
+        margin-top: 20px;
+      }
+
+      button {
+        padding: 5px;
+        font-size: 1rem;
+        border-radius: 15px;
+        background-color: gainsboro;
+      }
+
+      button:hover {
+        background-color: purple;
+        color: whitesmoke;
+      }
+
+      .screenBack {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #111011cc;
+        z-index: 20;
+        opacity: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .screenOverlay {
+        width: 85%;
+        height: 85%;
+        background-color: whitesmoke;
+        opacity: 1;
+        border: 1px black solid;
+        border-radius: 15px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-image: linear-gradient(
+          to bottom right,
+          rgba(60, 60, 199, 0.781),
+          purple,
+          green
+        );
+        color: whitesmoke;
+      }
+
+      .reset {
+        font-size: clamp(10px, 3vw, 25px);
+      }
+
+      .winnerScreen {
+        display: none;
+      }
+
+      .rules {
+        line-height: 1.5em;
+        font-size: clamp(8px, 2vw, 60px);
+        text-align: left;
+        padding-left: 10px;
+      }
+
+      .ruleHeading {
+        padding-top: 10px;
+        text-align: left;
+        padding-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="back">
+      <div class="content">
+        <div class="wrapper side1">
+          <div class="header">
+            <h1 class="p1">Player 1</h1>
+          </div>
+          <div class="footer">
+            <label>Score:</label>
+            <label class="score1">0</label>
+            <section class="buttonArea">
+              <button type="button" class="roll1">Roll Again</button>
+              <br />
+              <br />
+              <button type="button" class="end1">End Turn</button>
+            </section>
+          </div>
+        </div>
+        <div class="wrapper side2">
+          <div class="header">
+            <h1 class="p2">Player 2</h1>
+          </div>
+          <div class="footer">
+            <label>Score:</label>
+            <label class="score2">0</label>
+            <section class="buttonArea">
+              <button type="button" class="roll2">Roll Again</button>
+              <br />
+              <br />
+              <button type="button" class="end2">End Turn</button>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dice"></div>
+    <div class="winnerScreen">
+      <div class="screenBack">
+        <div class="screenOverlay">
+          <section>
+            <h1>The winner is:</h1>
+            <br />
+            <h1 class="winnerName">Fasih</h1>
+            <br />
+            <br />
+            <button type="button" class="reset">Reset</button>
+          </section>
+        </div>
+      </div>
+    </div>
+    <div class="introScreen">
+      <div class="screenBack">
+        <div class="screenOverlay">
+          <section>
+            <h1>The Dice Game 🎲</h1>
+            <hr />
+            <br />
+            <h2 class="ruleHeading">The rules are:</h2>
+            <br />
+            <pre class="rules">
+1. The players will take turns rolling their dice.
+2. Dice score is added to player score untill a 6 occurs.
+3. If a 6 occurs the player's score is reset and turn ends.
+4. A Player may decide to end their turn at any time.
+5. The first player to reach 35 points wins.
+            </pre>
+            <hr />
+            <br />
+            <button type="button" class="closeIntro">Start Game</button>
+            <button type="button" class="sound">Sound On</button>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script>
+      "use strict";
+      console.log("Game started");
+      // let name1 = prompt("Enter name of Player 1: ");
+      // let name2 = prompt("Enter name of Player 2: ");
+      const scoreToReach = 35;
+      let name1 = "Player 1";
+      let name2 = "Player 2";
+      let turn1 = true;
+      let diceVal = 0;
+      let score1 = 0;
+      let score2 = 0;
+      let turnCount = 1;
+      const click = new Audio("click.mp3");
+      let soundAllowed = true;
+
+      document.querySelector(".p1").textContent = name1;
+      document.querySelector(".p2").textContent = name2;
+
+      document
+        .querySelector(".closeIntro")
+        .addEventListener("click", function () {
+          if (soundAllowed) click.play();
+          document.querySelector(".introScreen").style.display = "none";
+        });
+
+      function toggleSound() {
+        console.log("Sound Toggled");
+        new Audio("click.mp3").play();
+        if (soundAllowed) {
+          soundAllowed = false;
+          let button = document.querySelector(".sound");
+          button.textContent = "Sound OFF";
+          button.style.backgroundColor = "red";
+          button.style.color = "whitesmoke";
+        } else {
+          soundAllowed = true;
+          let button = document.querySelector(".sound");
+          button.textContent = "Sound ON";
+          button.style.backgroundColor = "green";
+          button.style.color = "whitesmoke";
+        }
+      }
+
+      document.querySelector(".sound").addEventListener("click", toggleSound);
+
+      function dim() {
+        if (turn1) {
+          document.querySelector(".side1").style.opacity = "100%";
+          document.querySelector(".side2").style.opacity = "30%";
+        } else {
+          document.querySelector(".side2").style.opacity = "100%";
+          document.querySelector(".side1").style.opacity = "30%";
+        }
+      }
+
+      function updateDice() {
+        switch (diceVal) {
+          case 0:
+            document.querySelector(".dice").style.backgroundImage =
+              'url("0.png")';
+            break;
+          case 1:
+            document.querySelector(".dice").style.backgroundImage =
+              'url("1.png")';
+            break;
+          case 2:
+            document.querySelector(".dice").style.backgroundImage =
+              'url("2.png")';
+            break;
+          case 3:
+            document.querySelector(".dice").style.backgroundImage =
+              'url("3.png")';
+            break;
+          case 4:
+            document.querySelector(".dice").style.backgroundImage =
+              'url("4.png")';
+            break;
+          case 5:
+            document.querySelector(".dice").style.backgroundImage =
+              'url("5.png")';
+            break;
+          case 6:
+            document.querySelector(".dice").style.backgroundImage =
+              'url("6.png")';
+            break;
+          default:
+            document.querySelector(".dice").style.backgroundImage =
+              'url("0.png")';
+            break;
+        }
+      }
+
+      function updateScore(pos) {
+        switch (pos) {
+          case 1:
+            document.querySelector(".score1").textContent = score1;
+            break;
+          case 2:
+            document.querySelector(".score2").textContent = score2;
+            break;
+          default:
+            break;
+        }
+      }
+
+      function clearDice() {
+        document.querySelector(".dice").style.backgroundImage = 'url("0.png")';
+      }
+
+      function endGame() {
+        let winnerName;
+        if (score1 >= scoreToReach || score2 >= scoreToReach) {
+          if (score1 > score2) {
+            winnerName = name1;
+          } else winnerName = name2;
+          if (soundAllowed) new Audio("success.mp3").play();
+          document.querySelector(".winnerScreen").style.display = "block";
+          document.querySelector(".winnerName").textContent = winnerName;
+        }
+      }
+
+      dim();
+      updateDice();
+
+      document.querySelector(".end1").addEventListener("click", function () {
+        if (turn1 === true) {
+          if (soundAllowed) new Audio("turn.mp3").play();
+          turnCount = 0;
+          turn1 = false;
+          dim();
+          clearDice();
+        }
+      });
+
+      document.querySelector(".end2").addEventListener("click", function () {
+        if (turn1 === false) {
+          if (soundAllowed) new Audio("turn.mp3").play();
+          turnCount = 0;
+          turn1 = true;
+          dim();
+          clearDice();
+        }
+      });
+
+      document.querySelector(".roll1").addEventListener("click", function () {
+        if (turn1) {
+          if (soundAllowed) new Audio("dice.mp3").play();
+          diceVal = Math.trunc(Math.random() * 6) + 1;
+          console.log("Dice: " + diceVal);
+          updateDice();
+          if (diceVal === 6) {
+            score1 = 0;
+            turn1 = false;
+            if (soundAllowed) new Audio("fail.mp3").play();
+            turnCount = 0;
+          } else score1 += diceVal;
+          turnCount++;
+          if (turnCount >= 6) {
+            turn1 = !turn1;
+            if (soundAllowed) new Audio("fail.mp3").play();
+            turnCount = 0;
+          }
+          updateScore(1);
+          dim();
+          endGame();
+        }
+      });
+
+      document.querySelector(".roll2").addEventListener("click", function () {
+        if (!turn1) {
+          if (soundAllowed) new Audio("dice.mp3").play();
+          diceVal = Math.trunc(Math.random() * 6) + 1;
+          console.log("Dice: " + diceVal);
+          updateDice();
+          if (diceVal === 6) {
+            score2 = 0;
+            turn1 = true;
+            turnCount = 0;
+            if (soundAllowed) new Audio("fail.mp3").play();
+          } else score2 += diceVal;
+          turnCount++;
+          if (turnCount >= 6) {
+            turn1 = !turn1;
+            if (soundAllowed) new Audio("fail.mp3").play();
+            turnCount = 0;
+          }
+          updateScore(2);
+          dim();
+          endGame();
+        }
+      });
+
+      document.querySelector(".reset").addEventListener("click", function () {
+        location.reload();
+      });
+    </script>
+  </body>
+</html>
