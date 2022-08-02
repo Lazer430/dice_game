@@ -303,38 +303,31 @@
       }
 
       function updateDice() {
+        let dicePic = document.querySelector(".dice");
         switch (diceVal) {
           case 0:
-            document.querySelector(".dice").style.backgroundImage =
-              'url("0.png")';
+            dicePic.style.backgroundImage = 'url("0.png")';
             break;
           case 1:
-            document.querySelector(".dice").style.backgroundImage =
-              'url("1.png")';
+            dicePic.style.backgroundImage = 'url("1.png")';
             break;
           case 2:
-            document.querySelector(".dice").style.backgroundImage =
-              'url("2.png")';
+            dicePic.style.backgroundImage = 'url("2.png")';
             break;
           case 3:
-            document.querySelector(".dice").style.backgroundImage =
-              'url("3.png")';
+            dicePic.style.backgroundImage = 'url("3.png")';
             break;
           case 4:
-            document.querySelector(".dice").style.backgroundImage =
-              'url("4.png")';
+            dicePic.style.backgroundImage = 'url("4.png")';
             break;
           case 5:
-            document.querySelector(".dice").style.backgroundImage =
-              'url("5.png")';
+            dicePic.style.backgroundImage = 'url("5.png")';
             break;
           case 6:
-            document.querySelector(".dice").style.backgroundImage =
-              'url("6.png")';
+            dicePic.style.backgroundImage = 'url("6.png")';
             break;
           default:
-            document.querySelector(".dice").style.backgroundImage =
-              'url("0.png")';
+            dicePic.style.backgroundImage = 'url("0.png")';
             break;
         }
       }
