@@ -259,7 +259,7 @@
       let score1 = 0;
       let score2 = 0;
       let turnCount = 1;
-      const click = new Audio("click.mp3");
+      const click = new Audio("click.wav");
       let soundAllowed = true;
 
       document.querySelector(".p1").textContent = name1;
@@ -274,7 +274,7 @@
 
       function toggleSound() {
         console.log("Sound Toggled");
-        new Audio("click.mp3").play();
+        new Audio("click.wav").play();
         if (soundAllowed) {
           soundAllowed = false;
           let button = document.querySelector(".sound");
@@ -362,7 +362,7 @@
           if (score1 > score2) {
             winnerName = name1;
           } else winnerName = name2;
-          if (soundAllowed) new Audio("success.mp3").play();
+          if (soundAllowed) new Audio("success.wav").play();
           document.querySelector(".winnerScreen").style.display = "block";
           document.querySelector(".winnerName").textContent = winnerName;
         }
@@ -373,7 +373,7 @@
 
       document.querySelector(".end1").addEventListener("click", function () {
         if (turn1 === true) {
-          if (soundAllowed) new Audio("turn.mp3").play();
+          if (soundAllowed) new Audio("turn.wav").play();
           turnCount = 0;
           turn1 = false;
           dim();
@@ -383,7 +383,7 @@
 
       document.querySelector(".end2").addEventListener("click", function () {
         if (turn1 === false) {
-          if (soundAllowed) new Audio("turn.mp3").play();
+          if (soundAllowed) new Audio("turn.wav").play();
           turnCount = 0;
           turn1 = true;
           dim();
@@ -393,20 +393,20 @@
 
       document.querySelector(".roll1").addEventListener("click", function () {
         if (turn1) {
-          if (soundAllowed) new Audio("dice.mp3").play();
+          if (soundAllowed) new Audio("dice.wav").play();
           diceVal = Math.trunc(Math.random() * 6) + 1;
           console.log("Dice: " + diceVal);
           updateDice();
           if (diceVal === 6) {
             score1 = 0;
             turn1 = false;
-            if (soundAllowed) new Audio("fail.mp3").play();
+            if (soundAllowed) new Audio("fail.wav").play();
             turnCount = 0;
           } else score1 += diceVal;
           turnCount++;
           if (turnCount >= 6) {
             turn1 = !turn1;
-            if (soundAllowed) new Audio("fail.mp3").play();
+            if (soundAllowed) new Audio("fail.wav").play();
             turnCount = 0;
           }
           updateScore(1);
@@ -417,7 +417,7 @@
 
       document.querySelector(".roll2").addEventListener("click", function () {
         if (!turn1) {
-          if (soundAllowed) new Audio("dice.mp3").play();
+          if (soundAllowed) new Audio("dice.wav").play();
           diceVal = Math.trunc(Math.random() * 6) + 1;
           console.log("Dice: " + diceVal);
           updateDice();
@@ -425,12 +425,12 @@
             score2 = 0;
             turn1 = true;
             turnCount = 0;
-            if (soundAllowed) new Audio("fail.mp3").play();
+            if (soundAllowed) new Audio("fail.wav").play();
           } else score2 += diceVal;
           turnCount++;
           if (turnCount >= 6) {
             turn1 = !turn1;
-            if (soundAllowed) new Audio("fail.mp3").play();
+            if (soundAllowed) new Audio("fail.wav").play();
             turnCount = 0;
           }
           updateScore(2);
