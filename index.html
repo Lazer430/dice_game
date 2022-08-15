@@ -246,7 +246,8 @@
             <hr />
             <br />
             <button type="button" class="closeIntro">Start Game</button>
-            <button type="button" class="sound">Sound On</button>
+            <button type="button" class="sound">Sound ON</button>
+            <button class="AI">AI ON</button>
           </section>
         </div>
       </div>
@@ -264,12 +265,35 @@
       let score1 = 0;
       let score2 = 0;
       let turnCount = 1;
+      let aiMode = true;
       const dicePic = document.querySelector(".dice");
       const click = new Audio("click.wav");
       let soundAllowed = true;
 
+      const aiNode = document.querySelector(".AI");
+
       document.querySelector(".p1").textContent = name1;
       document.querySelector(".p2").textContent = name2;
+
+      document.querySelector(".sound").style.backgroundColor = "Green";
+      document.querySelector(".sound").style.color = "Whitesmoke";
+
+      aiNode.style.backgroundColor = "Green";
+      aiNode.style.color = "Whitesmoke";
+
+      document.querySelector(".AI").addEventListener("click", function () {
+        aiMode = !aiMode;
+        if (aiMode === false) {
+          aiNode.textContent = "AI OFF";
+          aiNode.style.backgroundColor = "Red";
+          aiNode.style.color = "Whitesmoke";
+        } else {
+          aiNode.textContent = "AI ON";
+          aiNode.style.backgroundColor = "Green";
+          aiNode.style.color = "Whitesmoke";
+        }
+        console.log("AI: " + aiMode);
+      });
 
       document
         .querySelector(".closeIntro")
@@ -366,21 +390,75 @@
         }
       }
 
+      function sleep(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
+
+      async function AIPlay() {
+        if (aiMode === true) {
+          let isAIturn = true;
+          let AIturns = Math.trunc(Math.random() * 6) + 1;
+          let curTurn = 0;
+
+          while (isAIturn && curTurn <= AIturns) {
+            if (soundAllowed) new Audio("dice.wav").play();
+            diceVal = Math.trunc(Math.random() * 6) + 1;
+            console.log("Dice: " + diceVal);
+            updateDice();
+
+            if (diceVal === 6) {
+              score2 = 0;
+              turn1 = true;
+              if (soundAllowed) new Audio("fail.wav").play();
+              turnCount = 0;
+              isAIturn = false;
+            } else score2 += diceVal;
+            turnCount++;
+            if (turnCount >= 6) {
+              turn1 = true;
+              if (soundAllowed) new Audio("fail.wav").play();
+              turnCount = 0;
+              isAIturn = false;
+            }
+
+            if (curTurn === AIturns) {
+              turn1 = true;
+              if (soundAllowed) new Audio("turn.wav").play();
+              turnCount = 0;
+              isAIturn = false;
+            }
+            updateScore(2);
+            await sleep(1200);
+            clearDice();
+            dim();
+            curTurn++;
+            endGame();
+          }
+        }
+      }
+
       dim();
       updateDice();
 
       document.querySelector(".end1").addEventListener("click", function () {
+        if (score1 >= 35 || score2 >= 35) {
+          return;
+        }
         if (turn1 === true) {
           if (soundAllowed) new Audio("turn.wav").play();
           turnCount = 0;
           turn1 = false;
           dim();
           clearDice();
+          AIPlay();
         }
       });
 
       document.querySelector(".end2").addEventListener("click", function () {
-        if (turn1 === false) {
+        if (score1 >= 35 || score2 >= 35 || aiMode) {
+          return;
+        }
+        if (turn1 === false && !aiMode) {
           if (soundAllowed) new Audio("turn.wav").play();
           turnCount = 0;
           turn1 = true;
@@ -390,6 +468,9 @@
       });
 
       document.querySelector(".roll1").addEventListener("click", function () {
+        if (score1 >= 35 || score2 >= 35) {
+          return;
+        }
         if (turn1) {
           if (soundAllowed) new Audio("dice.wav").play();
           diceVal = Math.trunc(Math.random() * 6) + 1;
@@ -400,12 +481,14 @@
             turn1 = false;
             if (soundAllowed) new Audio("fail.wav").play();
             turnCount = 0;
+            AIPlay();
           } else score1 += diceVal;
           turnCount++;
           if (turnCount >= 6) {
-            turn1 = !turn1;
+            turn1 = false;
             if (soundAllowed) new Audio("fail.wav").play();
             turnCount = 0;
+            AIPlay();
           }
           updateScore(1);
           dim();
@@ -414,6 +497,9 @@
       });
 
       document.querySelector(".roll2").addEventListener("click", function () {
+        if (score1 >= 35 || score2 >= 35 || aiMode) {
+          return;
+        }
         if (!turn1) {
           if (soundAllowed) new Audio("dice.wav").play();
           diceVal = Math.trunc(Math.random() * 6) + 1;
